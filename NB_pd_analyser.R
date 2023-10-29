@@ -5,6 +5,7 @@
 rm(list = ls())
 
 library(tidyverse)
+install.packages("naivebayes")
 library(naivebayes)
 library(ggplot2)
 library(rgl)
