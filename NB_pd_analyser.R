@@ -11,9 +11,9 @@ library(rgl)
 set.seed(245)
 
 # Load and partition Parkinsons Data
-pd_data = read.csv("PD/pd_speech_features.csv")
+pd_data = read.csv("parkinsons_disease/pd_speech_features.csv")
 
-# Turn class into logical column
+# Turn class (Wheter parkinsons or not) into logical column
 pd_data$class <- as.logical(pd_data$class)
 
 # Get the unique IDs from the 'id' column and 
