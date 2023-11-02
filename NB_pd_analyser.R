@@ -5,7 +5,6 @@
 rm(list = ls())
 
 library(tidyverse)
-install.packages("naivebayes")
 library(naivebayes)
 library(ggplot2)
 library(rgl)
@@ -46,8 +45,19 @@ test_prediction <- predict(nbmodel_pd, input_test_pd)
 
 # Analyse Data and compare to actual data
 x11()
+# Plot prediction by model
 plot(seq_len(length(test_pd$class)), as.numeric(test_prediction) - 1,
 pch = 3, ylim = c(-0.2, 1.2))
 
+legend("topright", legend = c("Predicted", "Actual"), pch = c(3, 1))
+
+# Plot actual patient state
 points(seq_len(length(test_pd$class)), as.numeric(test_pd$class),
 pch = 1)
+
+
+# Assuming both test_pd$class and test_prediction are binary and of the same length
+comparison <- test_pd$class == test_prediction
+
+# Calculate the fraction of equal values
+fraction_equal <- sum(comparison) / length(comparison)

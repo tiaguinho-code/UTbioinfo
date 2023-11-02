@@ -4,7 +4,7 @@ rm(list = ls())
 # Install and load necessary packages
 if (!require("tidyverse")) install.packages("tidyverse")
 if (!require("class")) install.packages("class")
-install.packages("XQuartz")
+# install.packages("XQuartz")
 
 library(tidyverse)
 library(class)
@@ -44,3 +44,9 @@ points(seq_along(test_target), as.numeric(test_target),
        pch = 1, col = "blue")
 legend("topright", legend = c("Predicted PD", "Actual PD"),
        col = c("black", "blue"), pch = c(3, 1))
+
+# See how many are equal
+comparison <- knn_pred == test_target
+
+# Calculate the fraction of equal values
+fraction_equal <- sum(comparison) / length(comparison)
