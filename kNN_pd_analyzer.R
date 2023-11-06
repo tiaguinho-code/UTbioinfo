@@ -32,15 +32,15 @@ train_target <- train_pd$class
 test_target <- test_pd$class
 
 # Implement KNN
-k_value <- 50  # Set the value of k
+k_value <- 200  # Set the value of k
 knn_pred <- knn(train_features, test_features, train_target, k = k_value)
 
 # Compare the predicted results with the actual data
 
-# plot(seq_along(test_target), as.numeric(knn_pred) - 1,pch = 3, ylim = c(-0.2, 1.2),xlab = "Sample Index", ylab = "Predicted vs Actual PD (KNN)")
-# points(seq_along(test_target), as.numeric(test_target),pch = 1, col = "blue")
-# legend("topright", legend = c("Predicted PD", "Actual PD"),col = c("black", "blue"), pch = c(3, 1))
+plot(seq_along(test_target), as.numeric(knn_pred) - 1,pch = 3, ylim = c(-0.2, 1.2),xlab = "Sample Index", ylab = "Predicted vs Actual PD (KNN)")
+points(seq_along(test_target), as.numeric(test_target),pch = 1, col = "blue")
+legend("topright", legend = c("Predicted PD", "Actual PD"),col = c("black", "blue"), pch = c(3, 1))
 accuracy <- sum(knn_pred == test_target) / length(test_target) * 100
 cat("Accuracy of the KNN model:", accuracy, "%\n")
 
-# Accuracy of the KNN model: 84 %
+# Accuracy of the KNN model: 72 %
