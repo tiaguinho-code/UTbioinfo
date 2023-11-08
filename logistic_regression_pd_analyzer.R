@@ -1,9 +1,9 @@
 rm(list = ls())
 
-library(neuralnet)
 library(tidyverse)
+library(caret)
 library(ggplot2)
-set.seed(412)
+set.seed(133)
 
 # Load and partition Parkinsons Data
 pd_data = read.csv("parkinsons_disease/pd_speech_features.csv")
@@ -28,39 +28,13 @@ test_pd <- pd_data[pd_data$id %in% test_ids, ]
 # minus their ID 
 train_selected_columns_pd <- setdiff(names(test_pd), "id")
 train_noid_pd <- train_pd[train_selected_columns_pd]
+train_noid_pd <- preProcess(train_noid_pd, method = "scale")
 
-nn_pd_model = neuralnet(
-    class ~ ., data = train_noid_pd,
-    hidden = c(150, 200, 200, 40),
-    linear.output = FALSE
-)
+lr_pd_model <- glm(class ~ ., data = train_noid_pd, family = binomial())
 
 # Confine test model such that it can be used as input for the predict function
 selected_columns_pd <- setdiff(names(test_pd), c("id", "class"))
 input_test_pd <- test_pd[selected_columns_pd]
 
-# Predict PD for test samples 
-test_prediction <- predict(nn_pd_model, input_test_pd)
-
-# Analyse Data and compare to actual data
-x11()
-# Plot prediction by model
-plot(seq_len(length(test_pd$class)), as.numeric(test_prediction),
-pch = 3, ylim = c(-0.2, 1.2))
-
-legend("topright", legend = c("Predicted", "Actual"), pch = c(3, 1))
-
-# Plot actual patient state
-points(seq_len(length(test_pd$class)), as.numeric(test_pd$class),
-pch = 1)
-
-
-# See how many are correctly predicted
-comparison <- test_pd$class == test_prediction
-
-# Calculate the fraction of equal values
-fraction_equal <- sum(comparison) / length(comparison)
-
-
-
-
+# Predict PD for test samples with logistic regression 
+test_prediction <- predict(lr_pd_model, input_test_pd, type = "response")
