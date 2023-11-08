@@ -3,7 +3,8 @@ rm(list = ls())
 library(tidyverse)
 library(caret)
 library(ggplot2)
-set.seed(133)
+library(JMbayes)
+set.seed(1253)
 
 # Load and partition Parkinsons Data
 pd_data = read.csv("parkinsons_disease/pd_speech_features.csv")
@@ -24,11 +25,10 @@ test_ids <- setdiff(unique_ids, train_ids)
 train_pd <- pd_data[pd_data$id %in% train_ids, ]               
 test_pd <- pd_data[pd_data$id %in% test_ids, ]   
 
-# Ceate NN model predicting pd as function of all patient attributes
+# Ceate LR model predicting pd as function of all patient attributes
 # minus their ID 
 train_selected_columns_pd <- setdiff(names(test_pd), "id")
 train_noid_pd <- train_pd[train_selected_columns_pd]
-train_noid_pd <- preProcess(train_noid_pd, method = "scale")
 
 lr_pd_model <- glm(class ~ ., data = train_noid_pd, family = binomial())
 
