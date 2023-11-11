@@ -35,12 +35,16 @@ rf_model <- randomForest(train_target ~ ., data = train_features, importance = T
 
 # Make predictions
 rf_pred <- predict(rf_model, test_features)
-importance(rf_model)
-varImpPlot(rf_model)
-
+importance(rf_pred) 
 # Compare the predicted results with the actual data
 accuracy <- sum(rf_pred == test_target) / length(test_target) * 100
 cat("Accuracy of the Random Forest model:", accuracy, "%\n")
 
 # Accuracy of the Random Forest model: 86.66667 %
+misclassified_indices <- which(rf_pred != test_target)
 
+# Print the misclassified data
+misclassified_data <- test_pd[misclassified_indices, ]
+print(misclassified_data)
+
+varImpPlot(rf_model)

@@ -114,3 +114,4 @@ ylab = "Prediction accuracy")
 dev.copy2pdf(file = "prediction_accuracies_NB.pdf")
 }
 sd(prediction_accuracies)
+
