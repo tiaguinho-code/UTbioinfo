@@ -34,7 +34,6 @@ rf_pred <- predict(rf_model, test_features)
 # importance(rf_model)
 # varImpPlot(rf_model)
 
->>>>>>> 6cbca7a570b27f19f091513587b98ba2a1d86e92
 # Compare the predicted results with the actual data
 accuracy <- sum(rf_pred == test_target) / length(test_target) * 100
 cat("Accuracy of the Random Forest model:", accuracy, "%\n")
