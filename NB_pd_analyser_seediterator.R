@@ -102,7 +102,7 @@ i = i + 1
 }
 legend("right", legend = c("Predicted", "Actual"), pch = c(3, 1))
 
-dev.copy2pdf(file = "test_sets.pdf")
+dev.copy2pdf(file = "figures/test_sets.pdf")
 
 summary(prediction_accuracies)
 #x11(width = 7, height = 5)
@@ -111,6 +111,6 @@ plot(prediction_accuracies,
 ylim = c(0,1),
 xlab = "Seed Iteration",
 ylab = "Prediction accuracy")
-dev.copy2pdf(file = "prediction_accuracies_NB.pdf")
+dev.copy2pdf(file = "figures/prediction_accuracies_NB.pdf")
 }
 sd(prediction_accuracies)
