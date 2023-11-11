@@ -10,7 +10,9 @@ library(randomForest)
 
 # Load the dataset
 pd_data <- read.csv("/Users/danielfan/Downloads/bio339n/final project/UTbioinfo/parkinsons_disease/pd_speech_features.csv")
+pd_data <- read.csv("parkinsons_disease/pd_speech_features.csv")
 
+rF_model <- function(pd_data){
 # Convert the 'class' column to logical
 pd_data$class <- as.logical(pd_data$class)
 
@@ -42,5 +44,9 @@ varImpPlot(rf_model)
 accuracy <- sum(rf_pred == test_target) / length(test_target) * 100
 cat("Accuracy of the Random Forest model:", accuracy, "%\n")
 
+return(rf_model)
+
+}
+rF_model(pd_data)
 # Accuracy of the Random Forest model: 86.66667 %
 
