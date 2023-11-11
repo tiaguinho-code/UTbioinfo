@@ -1,5 +1,3 @@
-rm(list = ls())
-
 library(neuralnet)
 library(tidyverse)
 library(ggplot2)
