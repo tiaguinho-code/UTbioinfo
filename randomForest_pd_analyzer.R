@@ -31,8 +31,8 @@ rf_model <- randomForest(train_target ~ ., data = train_features, importance = T
 
 # Make predictions
 rf_pred <- predict(rf_model, test_features)
-importance(rf_model)
-varImpPlot(rf_model)
+# importance(rf_model)
+# varImpPlot(rf_model)
 
 # Compare the predicted results with the actual data
 accuracy <- sum(rf_pred == test_target) / length(test_target) * 100
