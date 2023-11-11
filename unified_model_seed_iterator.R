@@ -3,8 +3,6 @@ rm(list = ls())
 source("NB_pd_analyser.R")
 source("randomForest_pd_analyzer.R")
 source("logistic_regression_pd_analyzer.R")
-source("kNN_pd_analyzer.R")
-
 
 # Plot the single plot for each seed
 single_plots = TRUE
@@ -33,6 +31,11 @@ lr_prediction_accuracies = vector(length = nreps)
 
 # Load Data
 pd_data <- read.csv("parkinsons_disease/pd_speech_features.csv")
+misclassified_combined <- data.frame()
+misclassified_lr <- data.frame()
+misclassified_nb <- data.frame()
+misclassified_rf <- data.frame()
+top_meanDecreaseAcc <- c()
 
 for(seed in seeds){
 set.seed(seed)
@@ -65,12 +68,18 @@ lr_model = lR_model(pd_data, train_ids)
 selected_columns_pd <- setdiff(names(test_pd), c("id", "class"))
 input_test_pd <- test_pd[selected_columns_pd]
 
+# Saves the important columns for each seed iteration
+importance_values <- importance(rf_model)
+importance_df <- as.data.frame(importance_values)
+top_vars <- head(importance_df[order(-importance_df$MeanDecreaseAccuracy), ], 3)
+top_var_names <- rownames(top_vars)
+top_meanDecreaseAcc <- c(top_var_names,top_meanDecreaseAcc)
+
 # Predict PD for test samples 
 nb_test_prediction <- predict(nb_model, input_test_pd)
 rf_test_prediction <- predict(rf_model, input_test_pd)
 lr_test_prediction <- round(as.numeric(
                         predict(lr_model, input_test_pd, type = "response")))
-knn_test_prediction <- kNN_model(pd_data, train_ids)
 
 # Analyse Data and compare to actual data
 if(single_plots == TRUE){
@@ -95,6 +104,17 @@ pch = 4, col = "green")
 combined_prediction = round((as.numeric(nb_test_prediction) - 1 + 
                        as.numeric(rf_test_prediction) - 1 +
                        as.numeric(lr_test_prediction)) / 3)
+
+misclassified_nb_instances <- test_pd[nb_test_prediction != test_pd$class, ]
+misclassified_rf_instances <- test_pd[rf_test_prediction != test_pd$class, ]
+misclassified_lr_instances <- test_pd[lr_test_prediction != test_pd$class, ]
+misclassified_combined_instances <- test_pd[combined_prediction != test_pd$class, ]
+
+misclassified_combined <- rbind(misclassified_combined,misclassified_combined_instances)
+misclassified_lr <- rbind(misclassified_lr,misclassified_lr_instances)
+misclassified_nb <- rbind(misclassified_nb,misclassified_nb_instances)
+misclassified_rf <- rbind(misclassified_rf,misclassified_rf_instances)
+
 
 # Check the accuracies
 nb_accuracy <- sum(nb_test_prediction == test_pd$class) / length(test_pd$class)

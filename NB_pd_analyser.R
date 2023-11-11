@@ -62,7 +62,7 @@ test_prediction <- predict(nbmodel_pd, input_test_pd)
 
 
 # Analyse Data and compare to actual data
-x11()
+# x11()
 plot(seq_len(length(test_pd$class)), as.numeric(test_prediction) - 1,
 pch = 3, ylim = c(-0.2, 1.2))
 

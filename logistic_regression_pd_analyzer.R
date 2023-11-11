@@ -66,7 +66,7 @@ input_test_pd <- test_pd[selected_columns_pd]
 test_prediction <- predict(lr_pd_model, input_test_pd, type = "response")
 
 
-x11()
+# x11()
 plot(seq_len(length(test_pd$class)), as.numeric(test_prediction),
 pch = 3)#, ylim = c(-0.2, 1.2))
 
