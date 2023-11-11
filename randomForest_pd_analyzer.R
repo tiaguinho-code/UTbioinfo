@@ -1,25 +1,19 @@
-# Clear the environment
-rm(list = ls())
-
 # Install and load necessary packages
-if (!require("tidyverse")) install.packages("tidyverse")
-if (!require("randomForest")) install.packages("randomForest")
+# if (!require("tidyverse")) install.packages("tidyverse")
+# if (!require("randomForest")) install.packages("randomForest")
 
 library(tidyverse)
 library(randomForest)
 
 # Load the dataset
-pd_data <- read.csv("/Users/danielfan/Downloads/bio339n/final project/UTbioinfo/parkinsons_disease/pd_speech_features.csv")
 pd_data <- read.csv("parkinsons_disease/pd_speech_features.csv")
+# Open the project with UTBIOINFO as root using setwd(path/to/UTBIOINFO)
 
-rF_model <- function(pd_data){
+rF_model <- function(pd_data, train_ids){
 # Convert the 'class' column to logical
 pd_data$class <- as.logical(pd_data$class)
 
 # Partition the data into training and testing sets
-unique_ids <- unique(pd_data$id)
-n_train <- round(0.9 * length(unique_ids))
-train_ids <- sample(unique_ids, size = n_train)
 train_pd <- pd_data[pd_data$id %in% train_ids, ]
 test_pd <- pd_data[!pd_data$id %in% train_ids, ]
 
@@ -47,6 +41,10 @@ cat("Accuracy of the Random Forest model:", accuracy, "%\n")
 return(rf_model)
 
 }
-rF_model(pd_data)
+unique_ids <- unique(pd_data$id)
+n_train <- round(0.9 * length(unique_ids))
+train_ids <- sample(unique_ids, size = n_train)
+
+rF_model(pd_data, train_ids)
 # Accuracy of the Random Forest model: 86.66667 %
 
