@@ -31,9 +31,10 @@ rf_model <- randomForest(train_target ~ ., data = train_features, importance = T
 
 # Make predictions
 rf_pred <- predict(rf_model, test_features)
-importance(rf_model)
-varImpPlot(rf_model)
+# importance(rf_model)
+# varImpPlot(rf_model)
 
+>>>>>>> 6cbca7a570b27f19f091513587b98ba2a1d86e92
 # Compare the predicted results with the actual data
 accuracy <- sum(rf_pred == test_target) / length(test_target) * 100
 cat("Accuracy of the Random Forest model:", accuracy, "%\n")
@@ -47,4 +48,10 @@ train_ids <- sample(unique_ids, size = n_train)
 
 rF_model(pd_data, train_ids)
 # Accuracy of the Random Forest model: 86.66667 %
+misclassified_indices <- which(rf_pred != test_target)
 
+# Print the misclassified data
+misclassified_data <- test_pd[misclassified_indices, ]
+print(misclassified_data)
+
+varImpPlot(rf_model)

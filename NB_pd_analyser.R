@@ -70,3 +70,35 @@ points(seq_len(length(test_pd$class)), as.numeric(test_pd$class),
 pch = 1)
 
 
+<<<<<<< HEAD
+# Calculate the fraction of equal values
+prediction_accuracy <- sum(comparison) / length(comparison)
+prediction_accuracies[i] = prediction_accuracy
+
+# Export data for unified analysis
+export_df <- data.frame(patient_ids = test_id_indeces, pd_state = test_pd$class,
+ pd_prediction = test_prediction, seed = seed)
+
+#write.table(export_df, 
+#    file = sprintf("parsed_data/naive_bayes/NB_pd_%d.csv", seed))
+
+print(prediction_accuracy)
+i = i + 1
+}
+legend("right", legend = c("Predicted", "Actual"), pch = c(3, 1))
+
+dev.copy2pdf(file = "test_sets.pdf")
+
+summary(prediction_accuracies)
+#x11(width = 7, height = 5)
+if(plotting_paccs){
+plot(prediction_accuracies,
+ylim = c(0,1),
+xlab = "Seed Iteration",
+ylab = "Prediction accuracy")
+dev.copy2pdf(file = "prediction_accuracies_NB.pdf")
+}
+sd(prediction_accuracies)
+
+=======
+>>>>>>> 6cbca7a570b27f19f091513587b98ba2a1d86e92
