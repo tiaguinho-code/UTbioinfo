@@ -12,7 +12,7 @@ seed = 245
 set.seed(seed)
 
 # choose number of iterations
-nreps = 8
+nreps = 25
 
 # create seeds
 seeds <- sample(1:100, nreps, replace = TRUE)
@@ -130,6 +130,33 @@ combined_prediction_accuracies[i] = combined_accuracy
 
 i = i + 1
 }
+
+# Find intersecting rows where all the models have failed to classify 
+misclassifiedRows <- list(misclassified_lr,misclassified_nb,misclassified_rf,misclassified_combined)
+commonRowsInMisclassified <- Reduce(intersect, lapply(misclassifiedRows, function(df) df$id))
+common_df <- misclassified_lr[misclassified_lr$id %in% commonRowsInMisclassified, ]
+
+# Compare the averages of the intersecting misclassified rows to that of the test set 
+library(dplyr)
+column_means_of_misclassified <- colMeans(common_df)
+means_of_misclassified <- data.frame(means = column_means_of_misclassified)
+test_not_in_common <- anti_join(test_pd, common_df, by = "id") # gets rid of the all the variables misclassified from the testing data so they arent accounted in the means
+column_means_of_test <- colMeans(test_not_in_common)
+means_of_test <- data.frame(means = column_means_of_test)
+means_of_misclassified$ID <- rownames(means_of_misclassified)
+means_of_test$ID <- rownames(means_of_test)
+resulting_join <- inner_join(means_of_misclassified,means_of_test, by = "ID")
+colnames(resulting_join) <- c("misclassified", "ID", "test")
+options(scipen = 999)
+resulting_join <- resulting_join %>% mutate(difference = (test - misclassified)/test) # stores the percent difference between the misclassified and test in a new column
+#further analysis can be taken by looking at the values that are greater than one
+
+# Find the most common importance values for determining the random forest prediction 
+freq_importance <- table(top_meanDecreaseAcc)
+print(freq_importance)
+
+#by far, the most common importance is std-delta_delta_log_energy and std_delta_log_energy
+
 x11()
 plot(combined_prediction_accuracies,
 ylim = c(0,1),
