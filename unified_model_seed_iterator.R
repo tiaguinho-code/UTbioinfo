@@ -149,7 +149,9 @@ resulting_join <- inner_join(means_of_misclassified,means_of_test, by = "ID")
 colnames(resulting_join) <- c("misclassified", "ID", "test")
 options(scipen = 999)
 resulting_join <- resulting_join %>% mutate(difference = (test - misclassified)/test) # stores the percent difference between the misclassified and test in a new column
-#further analysis can be taken by looking at the values that are greater than one
+filtered_rows <- resulting_join[abs(resulting_join$difference) > 1, c("ID", "difference")]
+greaterthan1 <- data.frame()
+greaterthan1 <- rbind(greaterthan1, filtered_rows)
 
 # Find the most common importance values for determining the random forest prediction 
 freq_importance <- table(top_meanDecreaseAcc)
