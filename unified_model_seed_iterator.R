@@ -151,12 +151,11 @@ options(scipen = 999)
 resulting_join <- resulting_join %>% mutate(difference = (test - misclassified)/test) # stores the percent difference between the misclassified and test in a new column
 filtered_rows <- resulting_join[abs(resulting_join$difference) > 1, c("ID", "difference")]
 greaterthan1 <- data.frame()
-greaterthan1 <- rbind(greaterthan1, filtered_rows)
+greaterthan1 <- rbind(greaterthan1, filtered_rows) # finds the rows where the difference is more than 100%
 
 # Find the most common importance values for determining the random forest prediction 
 freq_importance <- table(top_meanDecreaseAcc)
 print(freq_importance)
-
 #by far, the most common importance is std-delta_delta_log_energy and std_delta_log_energy
 
 x11()
@@ -172,3 +171,8 @@ legend("bottomright",
     legend = c("combined", "naive bayes",
                "random forest", "logistic regression"),
     pch = c(1, 3, 2, 4))
+
+average_combined <- mean(combined_prediction_accuracies) # Average accuracy of combined model = 88.48%
+average_rf <- mean(rf_prediction_accuracies) # Average accuracy of random forest model = 82.83%
+average_lr <- mean(lr_prediction_accuracies) # Average accuracy of logistic regression model = 92.8%
+average_nb <- mean(nb_prediction_accuracies) # Average accuracy of naive Bayes model = 79.36%
