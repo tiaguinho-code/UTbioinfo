@@ -83,7 +83,7 @@ export_df <- data.frame(patient_ids = test_id_indeces, pd_state = test_pd$class,
 
 legend("right", legend = c("Predicted", "Actual"), pch = c(3, 1))
 
-dev.copy2pdf(file = "test_sets.pdf")
+dev.copy2pdf(file = "figures/test_sets.pdf")
 
 summary(prediction_accuracies)
 #x11(width = 7, height = 5)

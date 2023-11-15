@@ -12,7 +12,7 @@ seed = 245
 set.seed(seed)
 
 # choose number of iterations
-nreps = 25
+nreps = 24
 
 # create seeds
 seeds <- sample(1:100, nreps, replace = TRUE)
@@ -172,3 +172,5 @@ legend("bottomright",
     legend = c("combined", "naive bayes",
                "random forest", "logistic regression"),
     pch = c(1, 3, 2, 4))
+2
+dev.copy2pdf(file = "figures/seediterator_allmodels.pdf")
