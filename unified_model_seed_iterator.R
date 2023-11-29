@@ -149,7 +149,7 @@ resulting_join <- inner_join(means_of_misclassified,means_of_test, by = "ID")
 colnames(resulting_join) <- c("misclassified", "ID", "test")
 options(scipen = 999)
 resulting_join <- resulting_join %>% mutate(difference = (test - misclassified)/test) # stores the percent difference between the misclassified and test in a new column
-filtered_rows <- resulting_join[abs(resulting_join$difference) > 1, c("ID", "difference")]
+filtered_rows <- resulting_join[abs(resulting_join$difference) > 20, c("ID", "difference")]
 greaterthan1 <- data.frame()
 greaterthan1 <- rbind(greaterthan1, filtered_rows) # finds the rows where the difference is more than 100%
 
