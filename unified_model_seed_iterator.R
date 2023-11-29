@@ -12,7 +12,7 @@ seed = 245
 set.seed(seed)
 
 # choose number of iterations
-nreps = 25
+nreps = 24
 
 # create seeds
 seeds <- sample(1:100, nreps, replace = TRUE)
@@ -176,3 +176,5 @@ average_combined <- mean(combined_prediction_accuracies) # Average accuracy of c
 average_rf <- mean(rf_prediction_accuracies) # Average accuracy of random forest model = 82.83%
 average_lr <- mean(lr_prediction_accuracies) # Average accuracy of logistic regression model = 92.8%
 average_nb <- mean(nb_prediction_accuracies) # Average accuracy of naive Bayes model = 79.36%
+2
+dev.copy2pdf(file = "figures/seediterator_allmodels.pdf")
